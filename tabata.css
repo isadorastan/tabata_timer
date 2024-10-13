@@ -45,3 +45,13 @@ button {
 #status {
   font-weight: bold;
 }
+
+.configurations {
+  margin: 30px 0;
+}
+
+.active-duration {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}

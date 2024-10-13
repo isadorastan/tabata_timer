@@ -25,6 +25,18 @@
       <button id="start">Start</button>
       <button id="reset">Reset</button>
     </div>
+
+    <div class="configurations">
+
+      <label>Active duration:</label>
+      <div class="active-duration">
+        <button id="subActiveDuration">-</button>
+        <p>
+          <span id="activeMin">00</span><span>:</span><span id="activeSec">10</span>
+        </p>
+        <button id="addActiveDuration">+</button>
+      </div>
+    </div>
   </div>
 
 
@@ -32,6 +44,10 @@
     // pegar os elementos
     const minEl = document.getElementById('min');
     const secEl = document.getElementById('sec');
+
+    const activeDurationMinEl = document.getElementById('activeMin');
+    const activeDurationSecEl = document.getElementById('activeSec');
+
     const container = document.getElementById('container');
 
     const statusEl = document.getElementById('status');
@@ -41,9 +57,13 @@
     startButton.addEventListener('click', startCounter);
     const resetButton = document.getElementById('reset');
     resetButton.addEventListener('click', resetCounter);
+    const addActiveDurationButton = document.getElementById('addActiveDuration');
+    addActiveDurationButton.addEventListener('click', addActiveDuration);
+    const subActiveDurationButton = document.getElementById('subActiveDuration');
+    subActiveDurationButton.addEventListener('click', subActiveDuration);
 
-    const DEFAULT_MINUTES = 0;
-    const DEFAULT_SECONDS = 10;
+    let DEFAULT_MINUTES = 0;
+    let DEFAULT_SECONDS = 10;
     const DEFAULT_REST_MINUTES = 0;
     const DEFAULT_REST_SECONDS = 5;
     const DEFAULT_ROUNDS = 8;
@@ -120,6 +140,40 @@
     function fillHtmlSecAndMin(min, sec) {
       secEl.innerHTML = sec < 10 ? `0${sec}` : sec;
       minEl.innerHTML = min < 10 ? `0${min}` : min;
+    }
+
+    function subActiveDuration() {
+      if (!DEFAULT_SECONDS) {
+        if (!DEFAULT_MINUTES) return;
+        DEFAULT_MINUTES--;
+        DEFAULT_SECONDS = 50;
+        updateDefaultTimeInHtml();
+        return;
+      }
+
+      DEFAULT_SECONDS -= 10;
+      updateDefaultTimeInHtml();
+    }
+
+    function addActiveDuration() {
+      if (DEFAULT_SECONDS === 50) {
+        DEFAULT_MINUTES += 1;
+        DEFAULT_SECONDS = 0
+        updateDefaultTimeInHtml();
+        return;
+      }
+
+      DEFAULT_SECONDS += 10;
+      updateDefaultTimeInHtml();
+    }
+
+    function updateDefaultTimeInHtml() {
+      const sec = DEFAULT_SECONDS;
+      const min = DEFAULT_MINUTES;
+      activeDurationSecEl.innerHTML = sec < 10 ? `0${sec}` : sec;
+      activeDurationMinEl.innerHTML = min < 10 ? `0${min}` : min;
+
+      fillHtmlSecAndMin(DEFAULT_MINUTES, DEFAULT_SECONDS);
     }
 
   </script>
