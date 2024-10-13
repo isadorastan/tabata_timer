@@ -16,6 +16,11 @@
       <h1>:</h1>
       <h1 id="sec">00</h1>
     </div>
+    <div class="info">
+      <div id="status"></div>
+      <div id="rounds"></div>
+    </div>
+
     <button id="start">Start</button>
     <button id="reset">Reset</button>
   </div>
@@ -26,6 +31,9 @@
     const minEl = document.getElementById('min');
     const secEl = document.getElementById('sec');
 
+    const statusEl = document.getElementById('status');
+    const roundsEl = document.getElementById('rounds');
+
     const startButton = document.getElementById('start');
     startButton.addEventListener('click', startCounter);
     const resetButton = document.getElementById('reset');
@@ -33,25 +41,60 @@
 
     const DEFAULT_MINUTES = 0;
     const DEFAULT_SECONDS = 10;
+    const DEFAULT_REST_MINUTES = 0;
+    const DEFAULT_REST_SECONDS = 5;
+    const DEFAULT_ROUNDS = 8;
+
     let interval = null;
+    let round = 1;
+    let isActive = true;
 
     fillHtmlSecAndMin(DEFAULT_MINUTES, DEFAULT_SECONDS);
 
     function resetCounter() {
       fillHtmlSecAndMin(DEFAULT_MINUTES, DEFAULT_SECONDS);
       clearInterval(interval);
+      roundsEl.innerHTML = '';
+      statusEl.innerHTML = '';
+    }
+
+    function handleNextRound() {
+
+      console.log('NEXT ROUND');
+      isActive = !isActive;
+
+      if (round >= DEFAULT_ROUNDS) {
+        statusEl.innerHTML = 'ACABOU ✌🏼'
+        return
+      };
+
+      // handle rounds
+      if (isActive) round++;
+      roundsEl.innerHTML = `ROUND ${round}/${DEFAULT_ROUNDS}`
+
+      statusEl.innerHTML = isActive ? 'ATIVO' : 'REST';
+      isActive ? setNewInterval(DEFAULT_MINUTES, DEFAULT_SECONDS) : setNewInterval(DEFAULT_REST_MINUTES, DEFAULT_REST_SECONDS);
     }
 
     function startCounter() {
-      fillHtmlSecAndMin(DEFAULT_MINUTES, DEFAULT_SECONDS);
-      let seconds = DEFAULT_SECONDS;
-      let minutes = DEFAULT_MINUTES;
+      round = 1;
+      isActive = true;
+      statusEl.innerHTML = 'ATIVO';
+      roundsEl.innerHTML = `ROUND ${round}/${DEFAULT_ROUNDS}`
+      setNewInterval(DEFAULT_MINUTES, DEFAULT_SECONDS);
+    }
+
+    function setNewInterval(min, sec) {
+      let seconds = sec;
+      let minutes = min;
+      fillHtmlSecAndMin(min, sec);
 
       interval = setInterval(() => {
 
         if (!seconds && !minutes) {
           console.log('TERMINOU');
           clearInterval(interval);
+          handleNextRound();
           return;
         }
 

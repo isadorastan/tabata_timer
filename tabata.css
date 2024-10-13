@@ -1,4 +1,14 @@
+html {
+  font-family: sans-serif;
+}
+
 .timer {
   display: flex;
   font-size: 50px;
+}
+
+.info {
+  font-size: 30px;
+  /* text-align: center; */
+  margin-bottom: 20px;
 }
