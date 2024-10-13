@@ -10,7 +10,7 @@
 </head>
 
 <body>
-  <div class="container">
+  <div id="container">
     <div class="timer">
       <h1 id="min">00</h1>
       <h1>:</h1>
@@ -21,8 +21,10 @@
       <div id="rounds"></div>
     </div>
 
-    <button id="start">Start</button>
-    <button id="reset">Reset</button>
+    <div class="actions">
+      <button id="start">Start</button>
+      <button id="reset">Reset</button>
+    </div>
   </div>
 
 
@@ -30,6 +32,7 @@
     // pegar os elementos
     const minEl = document.getElementById('min');
     const secEl = document.getElementById('sec');
+    const container = document.getElementById('container');
 
     const statusEl = document.getElementById('status');
     const roundsEl = document.getElementById('rounds');
@@ -56,17 +59,21 @@
       clearInterval(interval);
       roundsEl.innerHTML = '';
       statusEl.innerHTML = '';
+      container.classList = '';
     }
 
     function handleNextRound() {
 
       console.log('NEXT ROUND');
       isActive = !isActive;
+      container.classList = '';
 
       if (round >= DEFAULT_ROUNDS) {
         statusEl.innerHTML = 'ACABOU ✌🏼'
         return
       };
+
+      isActive ? container.classList.add('active') : container.classList.add('rest');
 
       // handle rounds
       if (isActive) round++;
@@ -80,6 +87,7 @@
       round = 1;
       isActive = true;
       statusEl.innerHTML = 'ATIVO';
+      container.classList.add('active');
       roundsEl.innerHTML = `ROUND ${round}/${DEFAULT_ROUNDS}`
       setNewInterval(DEFAULT_MINUTES, DEFAULT_SECONDS);
     }
