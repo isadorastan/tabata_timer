@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="tabata.css">
+  <title>Tabata</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="timer">
+      <h1 id="min">00</h1>
+      <h1>:</h1>
+      <h1 id="sec">00</h1>
+    </div>
+    <button id="start">Start</button>
+    <button id="reset">Reset</button>
+  </div>
+
+
+  <script>
+    // pegar os elementos
+    const minEl = document.getElementById('min');
+    const secEl = document.getElementById('sec');
+
+    const startButton = document.getElementById('start');
+    startButton.addEventListener('click', startCounter);
+    const resetButton = document.getElementById('reset');
+    resetButton.addEventListener('click', resetCounter);
+
+    const DEFAULT_MINUTES = 0;
+    const DEFAULT_SECONDS = 10;
+    let interval = null;
+
+    fillHtmlSecAndMin(DEFAULT_MINUTES, DEFAULT_SECONDS);
+
+    function resetCounter() {
+      fillHtmlSecAndMin(DEFAULT_MINUTES, DEFAULT_SECONDS);
+      clearInterval(interval);
+    }
+
+    function startCounter() {
+      fillHtmlSecAndMin(DEFAULT_MINUTES, DEFAULT_SECONDS);
+      let seconds = DEFAULT_SECONDS;
+      let minutes = DEFAULT_MINUTES;
+
+      interval = setInterval(() => {
+
+        if (!seconds && !minutes) {
+          console.log('TERMINOU');
+          clearInterval(interval);
+          return;
+        }
+
+        if (!seconds && minutes) {
+          minutes--;
+          seconds = 60;
+        }
+
+        seconds--;
+        fillHtmlSecAndMin(minutes, seconds)
+
+      }, 1000);
+    }
+
+    function fillHtmlSecAndMin(min, sec) {
+      secEl.innerHTML = sec < 10 ? `0${sec}` : sec;
+      minEl.innerHTML = min < 10 ? `0${min}` : min;
+    }
+
+  </script>
+</body>
+
+</html>
